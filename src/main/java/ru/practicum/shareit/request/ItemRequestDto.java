@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ItemRequest {
+public class ItemRequestDto {
     private long id;
     private String description;
     private long requestor;
