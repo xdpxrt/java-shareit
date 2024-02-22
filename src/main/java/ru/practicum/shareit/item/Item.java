@@ -13,11 +13,4 @@ public class Item {
     private Boolean available;
     private long owner;
     private ItemRequest request;
-
-    public Item(long id, String name, String description, Boolean available) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.available = available;
-    }
 }

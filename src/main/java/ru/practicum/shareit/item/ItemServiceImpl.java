@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final ItemMapper itemMapper;
 
     @Override
     public ItemDTO addItem(Long userId, ItemDTO itemDto) {
@@ -24,37 +25,37 @@ public class ItemServiceImpl implements ItemService {
                 itemDto.getAvailable() == null) {
             throw new ValidationException("Не указано имя, описание или статус.");
         }
-        Item item = ItemMapper.toItem(itemDto);
+        Item item = itemMapper.toItem(itemDto);
         item.setOwner(userId);
-        return ItemMapper.toItemDto(itemRepository.addItem(item));
+        return itemMapper.toItemDTO(itemRepository.addItem(item));
     }
 
     @Override
     public ItemDTO updateItem(Long userId, ItemDTO itemDto, long itemId) {
+        isOwner(userId, itemRepository.getItem(itemId).getOwner());
         userRepository.isUserExist(userId);
         itemRepository.isItemExist(itemId);
         itemDto.setId(itemId);
-        isOwner(userId, itemRepository.getItem(itemId).getOwner());
-        Item item = ItemMapper.toItem(itemDto);
-        return ItemMapper.toItemDto(itemRepository.updateItem(item));
+        Item item = itemMapper.toItem(itemDto);
+        return itemMapper.toItemDTO(itemRepository.updateItem(item));
     }
 
     @Override
     public ItemDTO getItem(long id) {
         itemRepository.isItemExist(id);
-        return ItemMapper.toItemDto(itemRepository.getItem(id));
+        return itemMapper.toItemDTO(itemRepository.getItem(id));
     }
 
     @Override
     public List<ItemDTO> getAllItems(long id) {
-        return itemRepository.getAllItems(id).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
+        return itemRepository.getAllItems(id).stream().map(itemMapper::toItemDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDTO> findItems(String text) {
         if (text == null || text.isBlank()) return new ArrayList<>();
         List<Item> list = itemRepository.findItems(text.toLowerCase());
-        return list.stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
+        return list.stream().map(itemMapper::toItemDTO).collect(Collectors.toList());
     }
 
     @Override
