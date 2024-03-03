@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import ru.practicum.shareit.item.model.CommentDTO;
 import ru.practicum.shareit.item.model.ItemDTO;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ItemService {
     List<ItemDTO> findItems(String item);
 
     void isOwner(Long userId, Long itemId);
+
+    CommentDTO addComment(Long bookerId, Long itemId, CommentDTO commentDTO);
 }
