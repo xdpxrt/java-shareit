@@ -9,16 +9,7 @@
 //import ru.practicum.shareit.error.exception.AccessException;
 //import ru.practicum.shareit.error.exception.NotFoundException;
 //import ru.practicum.shareit.error.exception.ValidationException;
-//import ru.practicum.shareit.item.mapper.ItemMapper;
-//import ru.practicum.shareit.item.model.ItemDTO;
-//import ru.practicum.shareit.item.repository.ItemRepository;
-//import ru.practicum.shareit.item.service.ItemService;
-//import ru.practicum.shareit.item.service.ItemServiceImpl;
-//import ru.practicum.shareit.user.mapper.UserMapper;
-//import ru.practicum.shareit.user.model.UserDTO;
-//import ru.practicum.shareit.user.repository.UserRepository;
-//import ru.practicum.shareit.user.service.UserService;
-//import ru.practicum.shareit.user.service.UserServiceImpl;
+//import ru.practicum.shareit.user.*;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertThrows;

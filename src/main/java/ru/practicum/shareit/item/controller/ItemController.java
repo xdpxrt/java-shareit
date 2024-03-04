@@ -30,14 +30,14 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ItemDTO getItem(@RequestHeader(USER_ID) long userId, @PathVariable @Positive long id) {
-        log.info("Получен запрос на получение вещи {}", id);
+        log.info("Получен запрос на получение вещи ID{}", id);
         return itemService.getItem(userId, id);
     }
 
     @PatchMapping("/{id}")
     public ItemDTO updateItem(@RequestHeader(USER_ID) long userId, @RequestBody @Valid ItemDTO itemDTO,
                               @PathVariable @Positive long id) {
-        log.info("Получен запрос на обновление вещи {}", id);
+        log.info("Получен запрос на обновление вещи ID{}", id);
         return itemService.updateItem(userId, itemDTO, id);
     }
 

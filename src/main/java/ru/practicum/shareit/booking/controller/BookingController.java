@@ -45,7 +45,7 @@ public class BookingController {
     public List<BookingDTO> getAllByBooker(@RequestHeader(USER_ID) long bookerId,
                                            @RequestParam(name = "state", defaultValue = "ALL")
                                            BookingState bookingState) {
-        log.info("Получен запрос на получение всех бронирований пользователя {}", bookerId);
+        log.info("Получен запрос на получение всех бронирований пользователя ID{}", bookerId);
         return bookingService.getAllByBooker(bookerId, bookingState);
     }
 
@@ -53,7 +53,7 @@ public class BookingController {
     public List<BookingDTO> getAllByOwner(@RequestHeader(USER_ID) long ownerId,
                                           @RequestParam(name = "state", defaultValue = "ALL")
                                           BookingState bookingState) {
-        log.info("Получен запрос на получение списка бронирований всех вещей пользователя {}", ownerId);
+        log.info("Получен запрос на получение списка бронирований всех вещей пользователя ID{}", ownerId);
         return bookingService.getAllByOwner(ownerId, bookingState);
     }
 }
