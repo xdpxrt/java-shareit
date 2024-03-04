@@ -2,6 +2,7 @@ package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.error.exception.NotFoundException;
 import ru.practicum.shareit.error.exception.ValidationException;
 import ru.practicum.shareit.user.mapper.UserMapper;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public UserDTO addUser(UserDTO userDto) {
         if (userDto.getName() == null || userDto.getName().isBlank() || userDto.getEmail() == null)
             throw new ValidationException("Не указано имя или почта!");
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO updateUser(UserDTO userDTO) {
         User user = userRepository.findById(userDTO.getId()).orElseThrow(() ->
                 new NotFoundException(String.format(USER_NOT_FOUND, userDTO.getId())));
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(long id) {
         userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(USER_NOT_FOUND, id)));
@@ -44,6 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO getUser(long id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(USER_NOT_FOUND, id)));
@@ -51,6 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserDto)

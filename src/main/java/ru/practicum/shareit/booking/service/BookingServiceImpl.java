@@ -13,6 +13,7 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
 
     @Override
+    @Transactional
     public BookingDTO add(Long userId, BookingDTOInput bookingDTOInput) {
         if (bookingDTOInput.getStart().isAfter(bookingDTOInput.getEnd()) ||
                 bookingDTOInput.getStart().equals((bookingDTOInput.getEnd()))) {
@@ -48,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingDTO approve(Long userId, Long bookingId, boolean approve) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
                 new NotFoundException(String.format(BOOKING_NOT_FOUND, bookingId)));
@@ -60,6 +63,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public BookingDTO get(Long userId, Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() ->
                 new NotFoundException(String.format(BOOKING_NOT_FOUND, bookingId)));
@@ -69,6 +73,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public List<BookingDTO> getAllByBooker(Long booker, BookingState bookingState) {
         userExistence(booker);
         LocalDateTime now = LocalDateTime.now();
@@ -96,6 +101,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional
     public List<BookingDTO> getAllByOwner(Long owner, BookingState bookingState) {
         userExistence(owner);
         LocalDateTime now = LocalDateTime.now();

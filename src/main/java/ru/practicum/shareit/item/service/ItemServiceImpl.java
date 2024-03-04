@@ -42,6 +42,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentMapper commentMapper;
 
     @Override
+    @Transactional
     public ItemDTO addItem(Long userId, ItemDTO itemDto) {
         if (itemDto.getName() == null || itemDto.getName().isBlank() ||
                 itemDto.getDescription() == null || itemDto.getDescription().isBlank() ||
@@ -56,6 +57,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDTO updateItem(Long userId, ItemDTO itemDto, long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new NotFoundException(String.format(ITEM_NOT_FOUND, itemId)));
@@ -75,6 +77,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemDTO getItem(Long userId, Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new NotFoundException(String.format(ITEM_NOT_FOUND, itemId)));
@@ -89,6 +92,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public List<ItemDTO> getAllItems(Long userId) {
         List<ItemDTO> items = itemRepository.findAllByOwnerId(userId).stream()
                 .map(itemMapper::toItemDTO)
@@ -109,6 +113,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public List<ItemDTO> findItems(String text) {
         if (text == null || text.isBlank()) return new ArrayList<>();
         List<Item> list = itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text);
@@ -117,8 +122,8 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
+    @Transactional
     public CommentDTO addComment(Long bookerId, Long itemId, CommentDTO commentDTO) {
         Booking booking = bookingRepository.findFirstByItemIdAndBookerIdOrderByStart(itemId, bookerId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с ID%d не бронировал вещь с ID%d ",
