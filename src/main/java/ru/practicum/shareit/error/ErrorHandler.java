@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.shareit.error.exception.*;
+import ru.practicum.shareit.error.exception.AccessException;
+import ru.practicum.shareit.error.exception.BadRequestException;
+import ru.practicum.shareit.error.exception.ConflictException;
+import ru.practicum.shareit.error.exception.NotFoundException;
+
+import javax.validation.ConstraintViolationException;
 
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, ValidationException.class, BadRequestException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class, BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestException(final RuntimeException e) {
         log.debug("Получен статус 400 Bad Request {}", e.getMessage(), e);

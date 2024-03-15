@@ -25,7 +25,8 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingDTO addBooking(@RequestHeader(USER_ID) long userId, @Valid @RequestBody BookingDTOInput bookingDTOInput) {
+    public BookingDTO addBooking(@RequestHeader(USER_ID) long userId,
+                                 @RequestBody @Valid BookingDTOInput bookingDTOInput) {
         log.info("Получен запрос на бронирование вещи {}", bookingDTOInput);
         return bookingService.add(userId, bookingDTOInput);
     }
