@@ -1,6 +1,7 @@
 package ru.practicum.shareit.booking.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.*;
@@ -74,27 +75,31 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<BookingDTO> getAllByBooker(Long booker, BookingState bookingState) {
+    public List<BookingDTO> getAllByBooker(Long booker, BookingState bookingState, PageRequest pageRequest) {
         userExistence(booker);
         LocalDateTime now = LocalDateTime.now();
         switch (bookingState) {
             case ALL:
-                return bookingMapper.toBookingDTO(bookingRepository.findAllByBookerIdOrderByStartDesc(booker));
+                return bookingMapper.toBookingDTO(bookingRepository
+                        .findAllByBookerIdOrderByStartDesc(booker, pageRequest).toList());
             case PAST:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByBookerIdAndEndIsBeforeOrderByStartDesc(booker, now));
+                        .findAllByBookerIdAndEndIsBeforeOrderByStartDesc(booker, now, pageRequest).toList());
             case FUTURE:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByBookerIdAndStartIsAfterOrderByStartDesc(booker, now));
+                        .findAllByBookerIdAndStartIsAfterOrderByStartDesc(booker, now, pageRequest).toList());
             case CURRENT:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(booker, now, now));
+                        .findAllByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(booker, now, now, pageRequest)
+                        .toList());
             case WAITING:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByBookerIdAndStatusIsOrderByStartDesc(booker, BookingStatus.WAITING));
+                        .findAllByBookerIdAndStatusIsOrderByStartDesc(booker, BookingStatus.WAITING, pageRequest)
+                        .toList());
             case REJECTED:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByBookerIdAndStatusIsOrderByStartDesc(booker, BookingStatus.REJECTED));
+                        .findAllByBookerIdAndStatusIsOrderByStartDesc(booker, BookingStatus.REJECTED, pageRequest)
+                        .toList());
             default:
                 throw new ValidationException("Неверно указан статус");
         }
@@ -102,27 +107,31 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<BookingDTO> getAllByOwner(Long owner, BookingState bookingState) {
+    public List<BookingDTO> getAllByOwner(Long owner, BookingState bookingState, PageRequest pageRequest) {
         userExistence(owner);
         LocalDateTime now = LocalDateTime.now();
         switch (bookingState) {
             case ALL:
-                return bookingMapper.toBookingDTO(bookingRepository.findAllByItemOwnerIdOrderByStartDesc(owner));
+                return bookingMapper.toBookingDTO(
+                        bookingRepository.findAllByItemOwnerIdOrderByStartDesc(owner, pageRequest).toList());
             case PAST:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByItemOwnerIdAndEndIsBeforeOrderByStartDesc(owner, now));
+                        .findAllByItemOwnerIdAndEndIsBeforeOrderByStartDesc(owner, now, pageRequest).toList());
             case FUTURE:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByItemOwnerIdAndStartIsAfterOrderByStartDesc(owner, now));
+                        .findAllByItemOwnerIdAndStartIsAfterOrderByStartDesc(owner, now, pageRequest).toList());
             case CURRENT:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(owner, now, now));
+                        .findAllByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(owner, now, now, pageRequest)
+                        .toList());
             case WAITING:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByItemOwnerIdAndStatusIsOrderByStartDesc(owner, BookingStatus.WAITING));
+                        .findAllByItemOwnerIdAndStatusIsOrderByStartDesc(owner, BookingStatus.WAITING, pageRequest)
+                        .toList());
             case REJECTED:
                 return bookingMapper.toBookingDTO(bookingRepository
-                        .findAllByItemOwnerIdAndStatusIsOrderByStartDesc(owner, BookingStatus.REJECTED));
+                        .findAllByItemOwnerIdAndStatusIsOrderByStartDesc(owner, BookingStatus.REJECTED, pageRequest)
+                        .toList());
             default:
                 throw new ValidationException("Неверно указан статус");
         }

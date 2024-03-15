@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -19,6 +20,8 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.ItemDTO;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -37,6 +40,7 @@ public class ItemServiceImpl implements ItemService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
     private final ItemMapper itemMapper;
     private final BookingMapper bookingMapper;
     private final CommentMapper commentMapper;
@@ -53,6 +57,11 @@ public class ItemServiceImpl implements ItemService {
                 new NotFoundException(String.format(USER_NOT_FOUND, userId)));
         Item item = itemMapper.toItem(itemDto);
         item.setOwner(user);
+        if (itemDto.getRequestId() != null) {
+            ItemRequest itemRequest = itemRequestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
+                    new NotFoundException(String.format("Запрос с ID%d не найден", itemDto.getRequestId())));
+            item.setRequest(itemRequest);
+        }
         return itemMapper.toItemDTO(itemRepository.save(item));
     }
 
@@ -93,7 +102,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemDTO> getAllItems(Long userId) {
+    public List<ItemDTO> getAllItems(Long userId, PageRequest pageRequest) {
         List<ItemDTO> items = itemRepository.findAllByOwnerId(userId).stream()
                 .map(itemMapper::toItemDTO)
                 .collect(Collectors.toList());
@@ -114,9 +123,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public List<ItemDTO> findItems(String text) {
+    public List<ItemDTO> findItems(String text, PageRequest pageRequest) {
         if (text == null || text.isBlank()) return new ArrayList<>();
-        List<Item> list = itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text);
+        List<Item> list = itemRepository.findByNameOrDescriptionContainingIgnoreCaseAndAvailableIsTrue(text, text,
+                pageRequest);
         return list.stream()
                 .map(itemMapper::toItemDTO)
                 .collect(Collectors.toList());
