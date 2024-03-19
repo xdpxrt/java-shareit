@@ -1,6 +1,10 @@
 package ru.practicum.shareit.booking;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.mapper.BookingMapperImpl;
 import ru.practicum.shareit.booking.model.Booking;
@@ -13,7 +17,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class BookingMapperTest {
+    @InjectMocks
+    private BookingMapperImpl decorator;
     private final BookingDTOInput bookingDTOInput = BookingDTOInput.builder()
             .itemId(1L)
             .start(LocalDateTime.now().plusMinutes(5))
@@ -31,11 +38,12 @@ public class BookingMapperTest {
             .description("description")
             .available(true)
             .build();
-    private final BookingMapper bookingMapper = new BookingMapperImpl();
+//    @Spy
+//    private final BookingMapper bookingMapper = new BookingMapperImpl();
 
     @Test
     void toBookingItemDto() {
-        Booking booking = bookingMapper.toBooking(bookingDTOInput, item, user, BookingStatus.WAITING);
+        Booking booking = decorator.toBooking(bookingDTOInput, item, user, BookingStatus.WAITING);
         assertEquals(item, booking.getItem());
         assertEquals(user, booking.getBooker());
         assertEquals(BookingStatus.WAITING, booking.getStatus());
