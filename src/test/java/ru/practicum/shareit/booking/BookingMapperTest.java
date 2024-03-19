@@ -7,6 +7,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.mapper.BookingMapperImpl;
+import ru.practicum.shareit.booking.mapper.BookingMapperImpl_;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingDTOInput;
 import ru.practicum.shareit.booking.model.BookingStatus;
@@ -38,8 +39,8 @@ public class BookingMapperTest {
             .description("description")
             .available(true)
             .build();
-//    @Spy
-//    private final BookingMapper bookingMapper = new BookingMapperImpl();
+    @Spy
+    private final BookingMapper bookingMapper = new BookingMapperImpl_();
 
     @Test
     void toBookingItemDto() {

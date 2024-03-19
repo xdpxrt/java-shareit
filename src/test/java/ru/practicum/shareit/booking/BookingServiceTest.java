@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
-import ru.practicum.shareit.booking.mapper.BookingMapperImpl;
+import ru.practicum.shareit.booking.mapper.BookingMapperImpl_;
 import ru.practicum.shareit.booking.model.*;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.service.BookingServiceImpl;
@@ -44,7 +44,7 @@ public class BookingServiceTest {
     private ItemRepository itemRepository;
     @Mock
     private UserRepository userRepository;
-    private final BookingMapper bookingMapper = new BookingMapperImpl();
+    private final BookingMapper bookingMapper = new BookingMapperImpl_();
     private final LocalDateTime now = LocalDateTime.now();
     private final User owner = User.builder()
             .id(1L)

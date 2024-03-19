@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.booking.model.BookingDTO;
 import ru.practicum.shareit.booking.model.BookingDTOInput;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.item.model.ItemDTO;
@@ -23,6 +25,7 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 public class ItemServiceIntegrationTest {
@@ -71,7 +74,7 @@ public class ItemServiceIntegrationTest {
     @Test
     void getItemByIdTest() {
         ItemDTO savedItem = itemService.addItem(ownerData.getId(), itemDTO);
-        bookingService.add(userData.getId(), bookingDTOInput);
+        BookingDTO bookingDTO = bookingService.add(userData.getId(), bookingDTOInput);
         ItemDTO itemData = itemService.getItem(1L, 1L);
         assertThat(itemData, notNullValue());
         assertThat(itemData.getId(), is(savedItem.getId()));
