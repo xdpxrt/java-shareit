@@ -20,11 +20,11 @@ public class BookingMapperTest {
             .end(LocalDateTime.now().plusMinutes(10))
             .build();
 
-    private final User user = User.builder().
-            id(1L).
-            name("name").
-            email("email@email.com").
-            build();
+    private final User user = User.builder()
+            .id(1L)
+            .name("name")
+            .email("email@email.com")
+            .build();
     private final Item item = Item.builder()
             .id(1L)
             .owner(user)
