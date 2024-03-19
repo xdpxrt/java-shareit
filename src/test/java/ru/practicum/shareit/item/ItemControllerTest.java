@@ -12,7 +12,6 @@ import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.model.CommentDTO;
 import ru.practicum.shareit.item.model.ItemDTO;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 

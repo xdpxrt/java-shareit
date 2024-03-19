@@ -122,6 +122,7 @@ public class ItemRequestServiceTest {
     void getRequestUserNotExistTest() {
         assertThrows(NotFoundException.class, () -> itemRequestService.getItemRequest(1L, 1L));
     }
+
     @Test
     void getRequestRequestNotExistTest() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
