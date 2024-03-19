@@ -45,6 +45,8 @@ public class BookingControllerTest {
             .end(LocalDateTime.now().plusDays(2))
             .item(itemDTO)
             .build();
+    private final Integer from = 0;
+    private final Integer size = 10;
 
     @Test
     void createBookingWhenAllParamsIsValidTest() throws Exception {
@@ -111,8 +113,6 @@ public class BookingControllerTest {
 
     @Test
     void getAllByOwnerBookingsTest() throws Exception {
-        Integer from = 0;
-        Integer size = 10;
         String state = "ALL";
         when(bookingService.getAllByOwner(anyLong(), any(), any())).thenReturn(List.of(bookingDTO));
         String result = mvc.perform(get("/bookings/owner")
@@ -130,7 +130,6 @@ public class BookingControllerTest {
     @Test
     void getAllByOwnerBookingBadRequestTest() throws Exception {
         Integer from = -1;
-        Integer size = 10;
         mvc.perform(get("/bookings/owner")
                         .param("from", String.valueOf(from))
                         .param("size", String.valueOf(size))

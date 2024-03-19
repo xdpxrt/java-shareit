@@ -47,19 +47,19 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDTO addItem(Long userId, ItemDTO itemDto) {
-        if (itemDto.getName() == null || itemDto.getName().isBlank() ||
-                itemDto.getDescription() == null || itemDto.getDescription().isBlank() ||
-                itemDto.getAvailable() == null) {
+    public ItemDTO addItem(Long userId, ItemDTO itemDTO) {
+        if (itemDTO.getName() == null || itemDTO.getName().isBlank() ||
+                itemDTO.getDescription() == null || itemDTO.getDescription().isBlank() ||
+                itemDTO.getAvailable() == null) {
             throw new ValidationException("Не указано имя, описание или статус.");
         }
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format(USER_NOT_FOUND, userId)));
-        Item item = itemMapper.toItem(itemDto);
+        Item item = itemMapper.toItem(itemDTO);
         item.setOwner(user);
-        if (itemDto.getRequestId() != null) {
-            ItemRequest itemRequest = itemRequestRepository.findById(itemDto.getRequestId()).orElseThrow(() ->
-                    new NotFoundException(String.format("Запрос с ID%d не найден", itemDto.getRequestId())));
+        if (itemDTO.getRequestId() != null) {
+            ItemRequest itemRequest = itemRequestRepository.findById(itemDTO.getRequestId()).orElseThrow(() ->
+                    new NotFoundException(String.format("Запрос с ID%d не найден", itemDTO.getRequestId())));
             item.setRequest(itemRequest);
         }
         return itemMapper.toItemDTO(itemRepository.save(item));
@@ -67,20 +67,20 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional
-    public ItemDTO updateItem(Long userId, ItemDTO itemDto, long itemId) {
+    public ItemDTO updateItem(Long userId, ItemDTO itemDTO, long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() ->
                 new NotFoundException(String.format(ITEM_NOT_FOUND, itemId)));
         isOwner(userId, item.getOwner().getId());
         userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format(USER_NOT_FOUND, userId)));
-        if (itemDto.getName() != null && !itemDto.getName().equals(item.getName())) {
-            item.setName(itemDto.getName());
+        if (itemDTO.getName() != null && !itemDTO.getName().equals(item.getName())) {
+            item.setName(itemDTO.getName());
         }
-        if (itemDto.getDescription() != null && !itemDto.getDescription().equals(item.getDescription())) {
-            item.setDescription(itemDto.getDescription());
+        if (itemDTO.getDescription() != null && !itemDTO.getDescription().equals(item.getDescription())) {
+            item.setDescription(itemDTO.getDescription());
         }
-        if (itemDto.getAvailable() != null && !itemDto.getAvailable().equals(item.getAvailable())) {
-            item.setAvailable(itemDto.getAvailable());
+        if (itemDTO.getAvailable() != null && !itemDTO.getAvailable().equals(item.getAvailable())) {
+            item.setAvailable(itemDTO.getAvailable());
         }
         return itemMapper.toItemDTO(itemRepository.save(item));
     }
