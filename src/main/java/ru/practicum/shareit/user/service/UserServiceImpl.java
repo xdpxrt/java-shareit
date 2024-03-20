@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO addUser(UserDTO userDto) {
-        if (userDto.getName() == null || userDto.getName().isBlank() || userDto.getEmail() == null)
+    public UserDTO addUser(UserDTO userDTO) {
+        if (userDTO.getName() == null || userDTO.getName().isBlank() || userDTO.getEmail() == null)
             throw new ValidationException("Не указано имя или почта!");
-        User user = userMapper.toUser(userDto);
+        User user = userMapper.toUser(userDTO);
         return userMapper.toUserDto(userRepository.save(user));
     }
 

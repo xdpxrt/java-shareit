@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.mapper;
 
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.shareit.booking.model.*;
@@ -8,6 +9,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 
+@DecoratedWith(BookingMapperDecorator.class)
 @Mapper(componentModel = "spring")
 public interface BookingMapper {
     BookingDTO toBookingDTO(Booking booking);

@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import org.springframework.data.domain.PageRequest;
 import ru.practicum.shareit.item.model.CommentDTO;
 import ru.practicum.shareit.item.model.ItemDTO;
 
@@ -12,9 +13,9 @@ public interface ItemService {
 
     ItemDTO getItem(Long userId, Long itemId);
 
-    List<ItemDTO> getAllItems(Long id);
+    List<ItemDTO> getAllItems(Long id, PageRequest pageRequest);
 
-    List<ItemDTO> findItems(String item);
+    List<ItemDTO> findItems(String item, PageRequest pageRequest);
 
     void isOwner(Long userId, Long itemId);
 

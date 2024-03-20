@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.model.CommentDTO;
@@ -10,6 +11,7 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @Slf4j
@@ -17,7 +19,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/items")
-
 public class ItemController {
     private final ItemService itemService;
     public static final String USER_ID = "X-Sharer-User-Id";
@@ -42,15 +43,19 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDTO> getAllItems(@RequestHeader(USER_ID) long userId) {
+    public List<ItemDTO> getAllItems(@RequestHeader(USER_ID) long userId,
+                                     @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                     @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получен запрос на получение списка вещей пользователя с ID{}", userId);
-        return itemService.getAllItems(userId);
+        return itemService.getAllItems(userId, PageRequest.of(from / size, size));
     }
 
     @GetMapping("/search")
-    public List<ItemDTO> findItem(@RequestParam String text) {
+    public List<ItemDTO> findItem(@RequestParam String text,
+                                  @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                  @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получен запрос на получение списка вещей по поиску {}", text);
-        return itemService.findItems(text);
+        return itemService.findItems(text, PageRequest.of(from / size, size));
     }
 
     @PostMapping("/{itemId}/comment")
