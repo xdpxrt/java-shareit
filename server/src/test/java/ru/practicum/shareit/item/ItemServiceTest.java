@@ -180,7 +180,7 @@ public class ItemServiceTest {
                 .id(1L)
                 .author(user)
                 .build();
-        when(itemRepository.findAllByOwnerId(anyLong())).thenReturn((List.of(item)));
+        when(itemRepository.findAllByOwnerIdOrderById(anyLong())).thenReturn((List.of(item)));
         lenient().when(bookingRepository
                 .findByItemIdInAndStatusNot(List.of(anyLong()), eq(BookingStatus.REJECTED))).thenReturn(bookings);
         lenient().when(commentRepository.findByItemIdIn(List.of(anyLong()))).thenReturn(List.of(comment));
