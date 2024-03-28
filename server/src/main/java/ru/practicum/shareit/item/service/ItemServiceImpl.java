@@ -103,7 +103,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public List<ItemDTO> getAllItems(Long userId, PageRequest pageRequest) {
-        List<ItemDTO> items = itemRepository.findAllByOwnerId(userId).stream()
+        List<ItemDTO> items = itemRepository.findAllByOwnerIdOrderById(userId).stream()
                 .map(itemMapper::toItemDTO)
                 .collect(Collectors.toList());
         List<Long> itemIds = items.stream()

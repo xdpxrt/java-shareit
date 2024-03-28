@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.client.ItemClient;
-import ru.practicum.shareit.item.model.CommentDTO;
+import ru.practicum.shareit.item.model.NewCommentDTO;
 import ru.practicum.shareit.item.model.NewItemDTO;
 import ru.practicum.shareit.item.model.UpdateItemDTO;
 
@@ -66,7 +66,7 @@ public class ItemController {
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> addComment(@RequestHeader(USER_ID) long userId,
                                              @PathVariable @Positive long itemId,
-                                             @RequestBody @Valid CommentDTO commentDTO) {
+                                             @RequestBody @Valid NewCommentDTO commentDTO) {
         log.info("Получен запрос на добавление комметнария к вещи с ID{}", itemId);
         return itemClient.addComment(userId, itemId, commentDTO);
     }
